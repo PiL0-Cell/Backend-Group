@@ -951,28 +951,35 @@ function formatExpiry(value) {
 
 async function loadAIRecommendations() {
     try {
-        const response = await fetch('/api/recommendations', {
-            method: 'GET',
-            credentials: 'include'
-        });
+        console.log('Loading AI recommendations...');
         
-        if (!response.ok) {
+        // Use apiCall instead of direct fetch for consistency
+        const result = await apiCall('/api/recommendations', 'GET');
+        
+        if (!result.ok) {
+            console.log('AI recommendations API returned:', result.status);
             return;
         }
         
-        const products = await response.json();
+        const recommendedProducts = result.data;
+        console.log('AI recommendations received:', recommendedProducts.length);
         
         // Only show section if there are recommendations
-        if (products && products.length > 0) {
+        if (recommendedProducts && recommendedProducts.length > 0) {
             const section = document.getElementById('ai-recommendations-section');
             const grid = document.getElementById('ai-recommendations-grid');
             
             if (section && grid) {
-                renderProductGrid('ai-recommendations-grid', products.slice(0, 4));
+                renderProductGrid('ai-recommendations-grid', recommendedProducts.slice(0, 4));
                 section.style.display = 'block';
+                console.log('AI recommendations displayed');
+            } else {
+                console.log('AI section or grid element not found on this page');
             }
+        } else {
+            console.log('No recommendations from API');
         }
     } catch (error) {
-        console.log('AI recommendations not available yet');
+        console.error('AI recommendations error:', error);
     }
 }

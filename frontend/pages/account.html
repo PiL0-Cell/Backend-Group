@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <meta name="description" content="My Account — Jamsel Cosmetics">
     <title>My Account — Jamsel Cosmetics</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,6 +10,310 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" href="../images/Logo1.png">
+    <style>
+        /* Account page specific responsive styles */
+        .account-page-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        .account-two-columns {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* Profile Card */
+        .profile-card-account {
+            background: white;
+            border-radius: 20px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #f0e6e9;
+            position: sticky;
+            top: 100px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #D4899F, #B5687E);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        .profile-avatar svg {
+            width: 50px;
+            height: 50px;
+            stroke: white;
+            stroke-width: 1.5;
+        }
+
+        .profile-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-email {
+            color: #888;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+            word-break: break-all;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #f0e6e9;
+            border-bottom: 1px solid #f0e6e9;
+            padding: 0.75rem 0;
+        }
+
+        .stat-number {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #D4899F;
+        }
+
+        .stat-label {
+            font-size: 0.65rem;
+            color: #888;
+        }
+
+        /* Right Column */
+        .account-right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Wishlist Section */
+        .wishlist-section-account {
+            background: white;
+            border-radius: 20px;
+            padding: 1.25rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #f0e6e9;
+        }
+
+        .section-header-account {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #f0e6e9;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .section-header-account h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .section-header-account a {
+            padding: 0.3rem 1rem;
+            border: 1px solid #D4899F;
+            border-radius: 30px;
+            color: #D4899F;
+            text-decoration: none;
+            font-size: 0.75rem;
+        }
+
+        /* Wishlist Items Grid */
+        .wishlist-items-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .wishlist-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            border-bottom: 1px solid #f0e6e9;
+            flex-wrap: wrap;
+        }
+
+        .wishlist-item-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .wishlist-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .wishlist-item-info {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .wishlist-item-info h4 {
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .wishlist-item-info p {
+            color: #D4899F;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .wishlist-item-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .wishlist-item-actions button {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.75rem;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+
+        .btn-move-cart {
+            background: #D4899F;
+            border: none;
+            color: white;
+        }
+
+        .btn-remove-wishlist {
+            background: transparent;
+            border: 1px solid #D4899F;
+            color: #D4899F;
+        }
+
+        .empty-wishlist {
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+        }
+
+        /* Payment Section */
+        .payment-section-account {
+            background: white;
+            border-radius: 20px;
+            padding: 1.25rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #f0e6e9;
+        }
+
+        .payment-section-account .section-header-account h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .credit-card-display {
+            margin-bottom: 1rem;
+        }
+
+        .credit-card-card {
+            background: linear-gradient(135deg, #2d2d2d, #1a1a1a);
+            border-radius: 16px;
+            padding: 1rem;
+            color: white;
+        }
+
+        .credit-card-card .card-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .credit-card-card .card-brand {
+            font-size: 0.7rem;
+        }
+
+        .credit-card-card .card-number {
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        .credit-card-card .card-expiry {
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+        #add-card-btn {
+            width: 100%;
+            padding: 0.7rem;
+            background: #D4899F;
+            border: none;
+            border-radius: 40px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .account-two-columns {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .profile-card-account {
+                position: static;
+            }
+            
+            .wishlist-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .wishlist-item-img {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .wishlist-item-actions {
+                justify-content: center;
+            }
+            
+            .credit-card-card .card-details {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .account-page-wrapper {
+                padding: 1rem;
+            }
+            
+            .wishlist-section-account,
+            .payment-section-account {
+                padding: 1rem;
+            }
+            
+            .section-header-account {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -48,57 +352,56 @@
             <p>Manage your profile, wishlist, and payment methods</p>
         </div>
 
-        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem 4rem;">
-            <div style="display: grid; grid-template-columns: 320px 1fr; gap: 2rem;">
+        <div class="account-page-wrapper">
+            <div class="account-two-columns">
+                
                 <!-- Profile Card -->
-                <div style="background: white; border-radius: 20px; padding: 2rem 1.5rem; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #f0e6e9;">
-                    <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #D4899F, #B5687E); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+                <div class="profile-card-account">
+                    <div class="profile-avatar">
                         <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                             <circle cx="12" cy="7" r="4"/>
                         </svg>
                     </div>
-                    <h2 id="profile-name" style="font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem;">Guest User</h2>
-                    <p id="profile-email" style="color: #888; margin-bottom: 1.5rem;">Not logged in</p>
-                    <div style="display: flex; justify-content: space-around; border-top: 1px solid #f0e6e9; border-bottom: 1px solid #f0e6e9; padding: 1rem 0;">
-                        <div style="text-align: center;">
-                            <div id="wishlist-stat-count" style="font-size: 1.5rem; font-weight: 700; color: #D4899F;">0</div>
-                            <div style="font-size: 0.7rem; color: #888;">Wishlist</div>
+                    <h2 class="profile-name" id="profile-name">Guest User</h2>
+                    <p class="profile-email" id="profile-email">Not logged in</p>
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <div class="stat-number" id="wishlist-stat-count">0</div>
+                            <div class="stat-label">Wishlist</div>
                         </div>
-                        <div style="text-align: center;">
-                            <div id="cart-stat-count" style="font-size: 1.5rem; font-weight: 700; color: #D4899F;">0</div>
-                            <div style="font-size: 0.7rem; color: #888;">Cart Items</div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="cart-stat-count">0</div>
+                            <div class="stat-label">Cart Items</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Right Column -->
-                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                <div class="account-right-column">
                     
                     <!-- Wishlist Section -->
-                    <div style="background: white; border-radius: 20px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #f0e6e9;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid #f0e6e9;">
-                            <h2 style="font-size: 1.25rem; font-weight: 600;">❤️ My Wishlist</h2>
-                            <a href="products.html" style="padding: 0.3rem 1rem; border: 1px solid #D4899F; border-radius: 30px; color: #D4899F; text-decoration: none; font-size: 0.8rem;">+ Add More</a>
+                    <div class="wishlist-section-account">
+                        <div class="section-header-account">
+                            <h2>❤️ My Wishlist</h2>
+                            <a href="products.html">+ Add More</a>
                         </div>
-                        <div id="account-wishlist-grid"></div>
-                        <div id="account-wishlist-empty" style="text-align: center; padding: 2rem; color: #999; display: none;">
+                        <div id="account-wishlist-grid" class="wishlist-items-container"></div>
+                        <div id="account-wishlist-empty" class="empty-wishlist" style="display: none;">
                             <p>Your wishlist is empty</p>
-                            <a href="products.html" class="btn-primary" style="margin-top: 1rem; display: inline-block;">Browse Products</a>
+                            <a href="products.html" class="btn-primary" style="margin-top: 1rem; display: inline-block; padding: 0.5rem 1.5rem;">Browse Products</a>
                         </div>
                     </div>
 
                     <!-- Credit Card Section -->
-                    <div style="background: white; border-radius: 20px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #f0e6e9;">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid #f0e6e9;">
-                            <h2 style="font-size: 1.25rem; font-weight: 600;">💳 Payment Methods</h2>
+                    <div class="payment-section-account">
+                        <div class="section-header-account">
+                            <h2>💳 Payment Methods</h2>
                         </div>
-                        
-                        <div id="credit-cards-list">
+                        <div id="credit-cards-list" class="credit-card-display">
                             <p style="color: #999; text-align: center; padding: 1rem;">Loading...</p>
                         </div>
-                        
-                        <button class="btn-primary" id="add-card-btn" style="margin-top: 1rem; width: 100%;">+ Add Credit / Debit Card</button>
+                        <button id="add-card-btn">+ Add Credit / Debit Card</button>
                     </div>
                 </div>
             </div>
@@ -180,7 +483,7 @@
                     </div>
                     <div class="form-group">
                         <label for="card-number">Card Number</label>
-                        <input type="text" id="card-number" required placeholder="1234 5678 9012 3456" maxlength="19">
+                        <input type="text" id="card-number" required placeholder="4111 1111 1111 1111" maxlength="19">
                         <small id="card-brand-hint" style="display: none; color: #D4899F; font-size: 0.7rem;"></small>
                     </div>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
@@ -208,26 +511,85 @@
 
     <script src="../js/script.js"></script>
     <script>
-        // ========== CREDIT CARD DISPLAY HELPERS ==========
-        async function loadCreditCardsDisplay() {
-            const container = document.getElementById('credit-cards-list');
-            if (!container) return;
+        // Load user profile
+        async function loadUserProfile() {
+            const result = await apiCall('/api/user', 'GET');
+            if (result.ok && result.data) {
+                document.getElementById('profile-name').textContent = result.data.username || 'User';
+                document.getElementById('profile-email').textContent = result.data.email || '';
+            }
+        }
+
+        // Load wishlist display
+        async function loadAccountWishlist() {
+            await loadWishlistFromBackend();
+            document.getElementById('wishlist-stat-count').textContent = wishlist.length;
             
+            const wishlistGrid = document.getElementById('account-wishlist-grid');
+            const wishlistEmpty = document.getElementById('account-wishlist-empty');
+            const wishlistProducts = products.filter(p => wishlist.includes(p.id));
+            
+            if (wishlistProducts.length === 0) {
+                wishlistGrid.style.display = 'none';
+                wishlistEmpty.style.display = 'block';
+            } else {
+                wishlistGrid.style.display = 'flex';
+                wishlistEmpty.style.display = 'none';
+                wishlistGrid.innerHTML = wishlistProducts.map(p => `
+                    <div class="wishlist-item">
+                        <div class="wishlist-item-img">
+                            <img src="${imgPath}${p.image.replace('images/', '')}" alt="${p.name}">
+                        </div>
+                        <div class="wishlist-item-info">
+                            <h4>${p.name}</h4>
+                            <p>Nu.${p.price.toFixed(2)}</p>
+                        </div>
+                        <div class="wishlist-item-actions">
+                            <button class="btn-move-cart" onclick="moveToCartAndRemove(${p.id})">Move to Cart</button>
+                            <button class="btn-remove-wishlist" onclick="removeFromWishlistAndRefresh(${p.id})">Remove</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        async function loadCartCount() {
+            await loadCartFromBackend();
+            const cartTotal = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cart-stat-count').textContent = cartTotal;
+        }
+
+        async function moveToCartAndRemove(productId) {
+            await addToCart(productId);
+            await removeFromWishlist(productId);
+            await loadAccountWishlist();
+            await loadCartCount();
+            updateCartBadge();
+            updateWishlistBadge();
+            showToast('Moved to cart!', 'success');
+        }
+
+        async function removeFromWishlistAndRefresh(productId) {
+            await removeFromWishlist(productId);
+            await loadAccountWishlist();
+            updateWishlistBadge();
+            showToast('Removed from wishlist', 'success');
+        }
+
+        // Credit card functions
+        async function loadCreditCardsDisplay() {
             const result = await apiCall('/api/cards', 'GET');
+            const container = document.getElementById('credit-cards-list');
             
             if (result.ok && result.data && result.data.length > 0) {
                 container.innerHTML = result.data.map(card => `
-                    <div style="background: linear-gradient(135deg, #2d2d2d, #1a1a1a); border-radius: 16px; padding: 1rem; color: white; margin-bottom: 0.75rem;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <span style="font-size: 0.7rem;">${card.card_brand || 'Card'}</span>
-                                <div style="font-family: monospace; font-size: 1rem;">•••• ${card.card_last4}</div>
-                                <div style="font-size: 0.7rem; opacity: 0.7;">Expires ${card.expiry_month}/${card.expiry_year}</div>
-                            </div>
-                            <div>
-                                ${card.is_default ? '<span style="background: #D4899F; padding: 0.2rem 0.5rem; border-radius: 20px; font-size: 0.7rem;">Default</span>' : ''}
-                                <button onclick="deleteCard(${card.id})" style="background: none; border: none; color: #ff6b6b; cursor: pointer; margin-left: 0.5rem; font-size: 1.2rem;">🗑️</button>
-                            </div>
+                    <div class="credit-card-card">
+                        <div class="card-details">
+                            <span class="card-brand">${card.card_brand || 'Card'}</span>
+                            <span class="card-number">•••• ${card.card_last4}</span>
+                            <span class="card-expiry">Expires ${card.expiry_month}/${card.expiry_year}</span>
+                            ${card.is_default ? '<span style="background: #D4899F; padding: 0.2rem 0.5rem; border-radius: 20px; font-size: 0.7rem;">Default</span>' : ''}
+                            <button onclick="deleteCard(${card.id})" style="background: none; border: none; color: #ff6b6b; cursor: pointer;">🗑️</button>
                         </div>
                     </div>
                 `).join('');
@@ -242,217 +604,42 @@
             if (result.ok) {
                 showToast('Card removed', 'success');
                 await loadCreditCardsDisplay();
-            } else {
-                showToast('Failed to remove card', 'error');
             }
         }
 
-        // ========== CREDIT CARD VALIDATION & FORMATTING ==========
-        function validateCardNumber(cardNumber) {
-            const clean = cardNumber.replace(/\s/g, '');
-            if (clean.length < 13 || clean.length > 19) return false;
-            let sum = 0;
-            let alternate = false;
-            for (let i = clean.length - 1; i >= 0; i--) {
-                let n = parseInt(clean.charAt(i));
-                if (alternate) {
-                    n *= 2;
-                    if (n > 9) n = n - 9;
-                }
-                sum += n;
-                alternate = !alternate;
-            }
-            return sum % 10 === 0;
-        }
-
-        function detectCardBrand(cardNumber) {
-            const clean = cardNumber.replace(/\s/g, '');
-            const firstDigit = clean.charAt(0);
-            const firstTwo = clean.substring(0, 2);
-            const firstFour = clean.substring(0, 4);
-            if (firstDigit === '4') return 'Visa';
-            if (firstTwo >= '51' && firstTwo <= '55') return 'Mastercard';
-            if (firstTwo === '34' || firstTwo === '37') return 'American Express';
-            if (firstFour === '6011' || firstTwo === '65') return 'Discover';
-            return 'Card';
-        }
-
-        function formatCardNumber(value) {
-            const clean = value.replace(/\s/g, '').replace(/\D/g, '');
-            let formatted = '';
-            for (let i = 0; i < clean.length; i++) {
-                if (i > 0 && i % 4 === 0) formatted += ' ';
-                formatted += clean[i];
-            }
-            return formatted;
-        }
-
-        function formatExpiry(value) {
-            const clean = value.replace(/\D/g, '');
-            if (clean.length >= 2) {
-                return clean.slice(0, 2) + '/' + clean.slice(2, 4);
-            }
-            return clean;
-        }
-
-        // ========== SAVE CREDIT CARD ==========
-        async function saveCreditCard(cardData) {
-            const result = await apiCall('/api/cards', 'POST', cardData);
-            if (result.ok) {
-                showToast('Card saved successfully!', 'success');
-                return true;
-            } else {
-                showToast(result.data.error || 'Failed to save card', 'error');
-                return false;
-            }
-        }
-
-        // ========== INITIALIZE CREDIT CARD MODAL ==========
-        function initCreditCardModal() {
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadUserProfile();
+            await loadCartCount();
+            await loadAccountWishlist();
+            await loadCreditCardsDisplay();
+            
+            // Credit card modal
             const addCardBtn = document.getElementById('add-card-btn');
             const cardModal = document.getElementById('card-modal');
             const cardModalClose = document.getElementById('card-modal-close');
             
-            if (!addCardBtn || !cardModal) {
-                console.error('Credit card modal elements not found');
-                return;
-            }
-            
-            addCardBtn.onclick = () => {
-                cardModal.classList.add('open');
-            };
-            
-            cardModalClose.onclick = () => {
-                cardModal.classList.remove('open');
-            };
-            
-            cardModal.onclick = (e) => {
-                if (e.target === cardModal) cardModal.classList.remove('open');
-            };
+            addCardBtn.onclick = () => cardModal.classList.add('open');
+            cardModalClose.onclick = () => cardModal.classList.remove('open');
+            cardModal.onclick = (e) => { if (e.target === cardModal) cardModal.classList.remove('open'); };
             
             const cardForm = document.getElementById('card-form');
-            if (cardForm) {
-                cardForm.onsubmit = async (e) => {
-                    e.preventDefault();
-                    
-                    const cardName = document.getElementById('card-name').value.trim();
-                    const cardNumberRaw = document.getElementById('card-number').value;
-                    const cardNumber = cardNumberRaw.replace(/\s/g, '');
-                    const expiryRaw = document.getElementById('card-expiry').value;
-                    const cvv = document.getElementById('card-cvv').value;
-                    const isDefault = document.getElementById('card-default').checked;
-                    
-                    if (!cardName) {
-                        showToast('Enter cardholder name', 'error');
-                        return;
-                    }
-                    if (!validateCardNumber(cardNumber)) {
-                        showToast('Invalid card number', 'error');
-                        return;
-                    }
-                    const expiryParts = expiryRaw.split('/');
-                    if (expiryParts.length !== 2) {
-                        showToast('Invalid expiry date (MM/YY)', 'error');
-                        return;
-                    }
-                    const month = parseInt(expiryParts[0]);
-                    if (month < 1 || month > 12) {
-                        showToast('Invalid month', 'error');
-                        return;
-                    }
-                    if (cvv.length < 3) {
-                        showToast('Invalid CVV', 'error');
-                        return;
-                    }
-                    
-                    const success = await saveCreditCard({
-                        card_number: cardNumber,
-                        card_holder_name: cardName,
-                        expiry_month: expiryParts[0],
-                        expiry_year: expiryParts[1],
-                        is_default: isDefault
-                    });
-                    
-                    if (success) {
-                        cardModal.classList.remove('open');
-                        cardForm.reset();
-                        await loadCreditCardsDisplay();
-                    }
-                };
-            }
-            
-            const cardNumberInput = document.getElementById('card-number');
-            if (cardNumberInput) {
-                cardNumberInput.oninput = (e) => {
-                    const formatted = formatCardNumber(e.target.value);
-                    e.target.value = formatted;
-                    const clean = formatted.replace(/\s/g, '');
-                    const brand = detectCardBrand(clean);
-                    const hint = document.getElementById('card-brand-hint');
-                    if (hint) {
-                        if (clean.length > 3) {
-                            hint.style.display = 'block';
-                            hint.textContent = `${brand} detected`;
-                        } else {
-                            hint.style.display = 'none';
-                        }
-                    }
-                };
-            }
-            
-            const expiryInput = document.getElementById('card-expiry');
-            if (expiryInput) {
-                expiryInput.oninput = (e) => {
-                    e.target.value = formatExpiry(e.target.value);
-                };
-            }
-        }
-
-        // ========== PAGE INITIALIZATION ==========
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Check login
-            const userResult = await apiCall('/api/user', 'GET');
-            if (!userResult.ok) {
-                window.location.href = '../index.html';
-                return;
-            }
-            
-            document.getElementById('profile-name').textContent = userResult.data.username;
-            document.getElementById('profile-email').textContent = userResult.data.email;
-            
-            await loadWishlistFromBackend();
-            await loadCartFromBackend();
-            
-            document.getElementById('wishlist-stat-count').textContent = wishlist.length;
-            document.getElementById('cart-stat-count').textContent = cart.reduce((s, i) => s + i.qty, 0);
-            
-            // Display wishlist items
-            const wishlistProducts = products.filter(p => wishlist.includes(p.id));
-            const wishlistGrid = document.getElementById('account-wishlist-grid');
-            const wishlistEmpty = document.getElementById('account-wishlist-empty');
-            
-            if (wishlistProducts.length === 0) {
-                wishlistGrid.style.display = 'none';
-                wishlistEmpty.style.display = 'block';
-            } else {
-                wishlistGrid.style.display = 'flex';
-                wishlistEmpty.style.display = 'none';
-                wishlistGrid.innerHTML = wishlistProducts.map(p => `
-                    <div style="display: flex; align-items: center; gap: 1rem; padding: 0.75rem; border-bottom: 1px solid #f0e6e9;">
-                        <img src="${imgPath}${p.image.replace('images/', '')}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 10px;">
-                        <div style="flex: 1;">
-                            <h4 style="margin-bottom: 0.25rem;">${p.name}</h4>
-                            <p style="color: #D4899F;">Nu.${p.price.toFixed(2)}</p>
-                        </div>
-                        <button class="btn-primary btn-sm" onclick="addToCart(${p.id}); removeFromWishlist(${p.id}); setTimeout(() => location.reload(), 500);">Move to Cart</button>
-                        <button class="btn-outline btn-sm" onclick="removeFromWishlist(${p.id}); location.reload();">Remove</button>
-                    </div>
-                `).join('');
-            }
-            
-            // Initialize credit card modal and load cards
-            initCreditCardModal();
-            await loadCreditCardsDisplay();
+            cardForm.onsubmit = async (e) => {
+                e.preventDefault();
+                const cardNumber = document.getElementById('card-number').value.replace(/\s/g, '');
+                const result = await saveCreditCard({
+                    card_number: cardNumber,
+                    card_holder_name: document.getElementById('card-name').value,
+                    expiry_month: document.getElementById('card-expiry').value.split('/')[0],
+                    expiry_year: document.getElementById('card-expiry').value.split('/')[1],
+                    is_default: document.getElementById('card-default').checked
+                });
+                if (result) {
+                    cardModal.classList.remove('open');
+                    cardForm.reset();
+                    await loadCreditCardsDisplay();
+                }
+            };
         });
     </script>
 </body>

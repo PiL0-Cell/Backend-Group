@@ -84,6 +84,7 @@ func (g *GorseClient) InsertFeedback(feedback []Feedback) error {
 
 func (g *GorseClient) GetRecommendations(userID string, n int) ([]string, error) {
 	url := fmt.Sprintf("%s/api/recommend/%s?n=%d", g.BaseURL, userID, n)
+
 	resp, err := g.Client.Get(url)
 	if err != nil {
 		return nil, err
@@ -153,6 +154,7 @@ func SyncUserWishlistToGorse(userID int64) error {
 	}
 
 	if len(feedback) > 0 {
+		log.Printf("Syncing %d wishlist items for user %d", len(feedback), userID)
 		return gorse.InsertFeedback(feedback)
 	}
 	return nil
@@ -187,6 +189,7 @@ func SyncUserOrdersToGorse(userID int64) error {
 	}
 
 	if len(feedback) > 0 {
+		log.Printf("Syncing %d purchased items for user %d", len(feedback), userID)
 		return gorse.InsertFeedback(feedback)
 	}
 	return nil

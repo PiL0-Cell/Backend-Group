@@ -27,15 +27,7 @@ func initDB() (*sql.DB, error) {
 	password := os.Getenv("DB_PASSWORD")
 	dbname := os.Getenv("DB_NAME")
 
-	// If on Render, use SSL require
-	if os.Getenv("RENDER") == "true" {
-		connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=prefer",
-			host, port, user, password, dbname)
-		log.Println("Connecting to Render PostgreSQL...")
-		return sql.Open("postgres", connStr)
-	}
-
-	// Local development fallback
+	// Local development fallback (only when env vars are not set)
 	if host == "" {
 		host = "localhost"
 	}
@@ -52,15 +44,31 @@ func initDB() (*sql.DB, error) {
 		dbname = "jamsel_cosmetics"
 	}
 
-	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
+	// Use sslmode=prefer for Render, disable for local
+	sslMode := "disable"
+	if os.Getenv("RENDER") == "true" {
+		sslMode = "prefer"
+		log.Println("Connecting to Render PostgreSQL...")
+	}
 
+	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
+		host, port, user, password, dbname, sslMode)
+
+	log.Printf("Connecting to database at %s:%s", host, port)
 	return sql.Open("postgres", connStr)
 }
 
 func enableCORS(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "https://jamsel-backend.onrender.com")
+		origin := r.Header.Get("Origin")
+		// Allow both localhost and Render
+		if origin == "http://localhost:8080" || origin == "https://jamsel-backend.onrender.com" {
+			w.Header().Set("Access-Control-Allow-Origin", origin)
+		} else if os.Getenv("RENDER") != "true" {
+			// Allow all origins in local development
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+		}
+
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 		w.Header().Set("Access-Control-Allow-Credentials", "true")
@@ -141,6 +149,23 @@ func main() {
 			return
 		}
 		w.Write([]byte("✅ Database is connected and working!"))
+	})).Methods("GET")
+
+	// Debug Gorse connection
+	router.HandleFunc("/api/debug-gorse", enableCORS(func(w http.ResponseWriter, r *http.Request) {
+		gorseURL := os.Getenv("GORSE_URL")
+		if gorseURL == "" {
+			gorseURL = "http://localhost:8088"
+		}
+
+		resp, err := http.Get(gorseURL + "/health")
+		if err != nil {
+			w.Write([]byte(fmt.Sprintf("❌ Gorse connection failed: %v\nURL: %s", err, gorseURL)))
+			return
+		}
+		defer resp.Body.Close()
+
+		w.Write([]byte(fmt.Sprintf("✅ Gorse connected! Status: %s\nURL: %s", resp.Status, gorseURL)))
 	})).Methods("GET")
 
 	// Serve frontend
