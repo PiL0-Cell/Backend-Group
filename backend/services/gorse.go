@@ -38,7 +38,7 @@ type Item struct {
 func NewGorseClient() *GorseClient {
 	gorseURL := os.Getenv("GORSE_URL")
 	if gorseURL == "" {
-		gorseURL = "http://host.docker.internal:8088"
+		gorseURL = "http://localhost:8088"
 	}
 	return &GorseClient{
 		BaseURL: gorseURL,
@@ -46,33 +46,13 @@ func NewGorseClient() *GorseClient {
 	}
 }
 
-// HealthCheck tests if Gorse is running
-func (g *GorseClient) HealthCheck() error {
-	// Use /health, not /api/health
-	resp, err := g.Client.Get(g.BaseURL + "/health")
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("Gorse health check failed: %s", resp.Status)
-	}
-	return nil
-}
-
-// InsertItem adds a product to Gorse's catalog
 func (g *GorseClient) InsertItem(item Item) error {
 	jsonData, err := json.Marshal(item)
 	if err != nil {
 		return err
 	}
 
-	resp, err := g.Client.Post(
-		g.BaseURL+"/api/item",
-		"application/json",
-		bytes.NewBuffer(jsonData),
-	)
+	resp, err := g.Client.Post(g.BaseURL+"/api/item", "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
 		return err
 	}
@@ -84,18 +64,13 @@ func (g *GorseClient) InsertItem(item Item) error {
 	return nil
 }
 
-// InsertFeedback sends user actions to Gorse
 func (g *GorseClient) InsertFeedback(feedback []Feedback) error {
 	jsonData, err := json.Marshal(feedback)
 	if err != nil {
 		return err
 	}
 
-	resp, err := g.Client.Post(
-		g.BaseURL+"/api/feedback",
-		"application/json",
-		bytes.NewBuffer(jsonData),
-	)
+	resp, err := g.Client.Post(g.BaseURL+"/api/feedback", "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
 		return err
 	}
@@ -107,10 +82,8 @@ func (g *GorseClient) InsertFeedback(feedback []Feedback) error {
 	return nil
 }
 
-// GetRecommendations gets personalized recommendations for a user
 func (g *GorseClient) GetRecommendations(userID string, n int) ([]string, error) {
 	url := fmt.Sprintf("%s/api/recommend/%s?n=%d", g.BaseURL, userID, n)
-
 	resp, err := g.Client.Get(url)
 	if err != nil {
 		return nil, err
@@ -128,28 +101,6 @@ func (g *GorseClient) GetRecommendations(userID string, n int) ([]string, error)
 	return items, nil
 }
 
-// GetLatestItems gets newest items
-func (g *GorseClient) GetLatestItems(n int) ([]string, error) {
-	url := fmt.Sprintf("%s/api/latest?n=%d", g.BaseURL, n)
-
-	resp, err := g.Client.Get(url)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("Gorse error: %s", resp.Status)
-	}
-
-	var items []string
-	if err := json.NewDecoder(resp.Body).Decode(&items); err != nil {
-		return nil, err
-	}
-	return items, nil
-}
-
-// SyncAllProducts syncs all products to Gorse
 func SyncAllProducts() error {
 	gorse := NewGorseClient()
 
@@ -178,7 +129,6 @@ func SyncAllProducts() error {
 	return nil
 }
 
-// SyncUserWishlistToGorse sends all wishlist items to Gorse
 func SyncUserWishlistToGorse(userID int64) error {
 	gorse := NewGorseClient()
 
@@ -193,9 +143,8 @@ func SyncUserWishlistToGorse(userID int64) error {
 	for rows.Next() {
 		var productID int
 		rows.Scan(&productID)
-
 		feedback = append(feedback, Feedback{
-			FeedbackType: "like", // Gorse uses "like" for wishlist type actions
+			FeedbackType: "like",
 			UserId:       fmt.Sprintf("%d", userID),
 			ItemId:       fmt.Sprintf("%d", productID),
 			Value:        1.0,
@@ -204,13 +153,11 @@ func SyncUserWishlistToGorse(userID int64) error {
 	}
 
 	if len(feedback) > 0 {
-		log.Printf("Syncing %d wishlist items for user %d to Gorse", len(feedback), userID)
 		return gorse.InsertFeedback(feedback)
 	}
 	return nil
 }
 
-// SyncUserOrdersToGorse sends all purchased items to Gorse
 func SyncUserOrdersToGorse(userID int64) error {
 	gorse := NewGorseClient()
 
@@ -230,7 +177,6 @@ func SyncUserOrdersToGorse(userID int64) error {
 	for rows.Next() {
 		var productID int
 		rows.Scan(&productID)
-
 		feedback = append(feedback, Feedback{
 			FeedbackType: "purchase",
 			UserId:       fmt.Sprintf("%d", userID),
@@ -241,7 +187,6 @@ func SyncUserOrdersToGorse(userID int64) error {
 	}
 
 	if len(feedback) > 0 {
-		log.Printf("Syncing %d purchased items for user %d to Gorse", len(feedback), userID)
 		return gorse.InsertFeedback(feedback)
 	}
 	return nil

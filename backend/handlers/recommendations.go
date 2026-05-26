@@ -9,7 +9,6 @@ import (
 )
 
 func GetAIRecommendations(w http.ResponseWriter, r *http.Request) {
-	// Only return recommendations for logged-in users
 	userID := GetLoggedInUserID(r)
 	if userID == 0 {
 		w.Header().Set("Content-Type", "application/json")
@@ -18,8 +17,6 @@ func GetAIRecommendations(w http.ResponseWriter, r *http.Request) {
 	}
 
 	gorse := services.NewGorseClient()
-
-	// Get personalized recommendations
 	recommendedIDs, err := gorse.GetRecommendations(strconv.FormatInt(userID, 10), 8)
 	if err != nil || len(recommendedIDs) == 0 {
 		w.Header().Set("Content-Type", "application/json")
@@ -27,7 +24,6 @@ func GetAIRecommendations(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Convert IDs to product objects
 	var recommendations []models.Product
 	for _, idStr := range recommendedIDs {
 		id, err := strconv.Atoi(idStr)
@@ -55,7 +51,6 @@ func SyncUserToGorse(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Sync wishlist and orders to Gorse
 	go services.SyncUserWishlistToGorse(userID)
 	go services.SyncUserOrdersToGorse(userID)
 

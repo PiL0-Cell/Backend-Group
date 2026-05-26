@@ -3,7 +3,6 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"jamsel-backend/database"
 	"jamsel-backend/models"
 	"jamsel-backend/services"
 	"net/http"
@@ -49,12 +48,10 @@ func CreateOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Create order number if not provided
 	if req.OrderNumber == "" {
 		req.OrderNumber = fmt.Sprintf("ORD-%d", time.Now().UnixNano())
 	}
 
-	// Create order in database
 	order := &models.Order{
 		OrderNumber:     req.OrderNumber,
 		UserID:          userID,
@@ -78,7 +75,6 @@ func CreateOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Add each item to order_items
 	for _, item := range req.Items {
 		orderItem := &models.OrderItem{
 			OrderID:      orderID,
@@ -89,23 +85,18 @@ func CreateOrder(w http.ResponseWriter, r *http.Request) {
 			Quantity:     item.Quantity,
 			Subtotal:     item.Price * float64(item.Quantity),
 		}
-
-		err = models.AddOrderItem(orderItem)
-		if err != nil {
+		if err := models.AddOrderItem(orderItem); err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
 			json.NewEncoder(w).Encode(map[string]string{"error": "Failed to add order items"})
 			return
 		}
 	}
 
-	// Clear the user's cart after successful order
-	err = models.ClearCartAfterOrder(userID)
-	if err != nil {
-		// Log error but don't fail the order
+	if err := models.ClearCartAfterOrder(userID); err != nil {
 		fmt.Println("Warning: Failed to clear cart:", err)
 	}
 
-	go services.SyncUserWishlistToGorse(userID)
+	go services.SyncUserOrdersToGorse(userID)
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]interface{}{
@@ -124,35 +115,11 @@ func GetUserOrders(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	query := `SELECT id, order_number, total, status, created_at 
-              FROM orders WHERE user_id = $1 
-              ORDER BY created_at DESC`
-
-	rows, err := database.DB.Query(query, userID)
+	orders, err := models.GetUserOrders(userID)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{"error": "Failed to fetch orders"})
 		return
-	}
-	defer rows.Close()
-
-	var orders []map[string]interface{}
-	for rows.Next() {
-		var id int64
-		var orderNumber string
-		var total float64
-		var status string
-		var createdAt string
-
-		rows.Scan(&id, &orderNumber, &total, &status, &createdAt)
-
-		orders = append(orders, map[string]interface{}{
-			"id":           id,
-			"order_number": orderNumber,
-			"total":        total,
-			"status":       status,
-			"created_at":   createdAt,
-		})
 	}
 
 	w.WriteHeader(http.StatusOK)

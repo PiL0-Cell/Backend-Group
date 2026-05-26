@@ -19,16 +19,9 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
-// GetLoggedInUserID returns user ID from session cookie
 func GetLoggedInUserID(r *http.Request) int64 {
-	if Store == nil {
-		log.Println("Store is nil in GetLoggedInUserID")
-		return 0
-	}
-
 	session, err := Store.Get(r, "jamsel-session")
 	if err != nil {
-		log.Println("Session error:", err)
 		return 0
 	}
 
@@ -68,7 +61,6 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	err = user.Create()
 	if err != nil {
-		log.Println("Registration error:", err)
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{"error": "Failed to create user. Email may already exist."})
 		return
@@ -111,31 +103,15 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Create session
-	if Store == nil {
-		log.Println("Store is nil in Login")
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"error": "Session store not initialized"})
-		return
-	}
-
 	session, _ := Store.Get(r, "jamsel-session")
 	session.Values["user_id"] = user.ID
 	session.Values["username"] = user.Username
 	session.Values["email"] = user.Email
-	err = session.Save(r, w)
-	if err != nil {
-		log.Println("Session save error:", err)
-	}
+	session.Save(r, w)
 
-	go func() {
-		if err := services.SyncUserWishlistToGorse(user.ID); err != nil {
-			log.Println("Failed to sync wishlist to Gorse:", err)
-		}
-		if err := services.SyncUserOrdersToGorse(user.ID); err != nil {
-			log.Println("Failed to sync orders to Gorse:", err)
-		}
-	}()
+	// Sync user data to Gorse
+	go services.SyncUserWishlistToGorse(user.ID)
+	go services.SyncUserOrdersToGorse(user.ID)
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]interface{}{

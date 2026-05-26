@@ -1,6 +1,8 @@
 package models
 
-import db "jamsel-backend/database"
+import (
+	"jamsel-backend/database"
+)
 
 type WishlistItem struct {
 	ProductID int     `json:"product_id"`
@@ -13,8 +15,7 @@ func AddToWishlist(userID int64, productID int) error {
 	query := `INSERT INTO wishlist (user_id, product_id)
               VALUES ($1, $2)
               ON CONFLICT (user_id, product_id) DO NOTHING`
-
-	_, err := db.DB.Exec(query, userID, productID)
+	_, err := database.DB.Exec(query, userID, productID)
 	return err
 }
 
@@ -25,7 +26,7 @@ func GetWishlist(userID int64) ([]WishlistItem, error) {
               WHERE w.user_id = $1
               ORDER BY w.added_at DESC`
 
-	rows, err := db.DB.Query(query, userID)
+	rows, err := database.DB.Query(query, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -45,6 +46,6 @@ func GetWishlist(userID int64) ([]WishlistItem, error) {
 
 func RemoveFromWishlist(userID int64, productID int) error {
 	query := `DELETE FROM wishlist WHERE user_id = $1 AND product_id = $2`
-	_, err := db.DB.Exec(query, userID, productID)
+	_, err := database.DB.Exec(query, userID, productID)
 	return err
 }

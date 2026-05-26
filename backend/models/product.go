@@ -2,7 +2,7 @@ package models
 
 import (
 	"database/sql"
-	db "jamsel-backend/database"
+	"jamsel-backend/database"
 )
 
 type Product struct {
@@ -27,7 +27,7 @@ func GetAllProducts() ([]Product, error) {
               ingredients, image, rating, reviews, badge, is_new, is_sale, shades
               FROM products ORDER BY id`
 
-	rows, err := db.DB.Query(query)
+	rows, err := database.DB.Query(query)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +53,7 @@ func GetProductByID(id int) (*Product, error) {
               FROM products WHERE id = $1`
 
 	var p Product
-	err := db.DB.QueryRow(query, id).Scan(
+	err := database.DB.QueryRow(query, id).Scan(
 		&p.ID, &p.Name, &p.Price, &p.OriginalPrice, &p.Category,
 		&p.Description, &p.Ingredients, &p.Image, &p.Rating, &p.Reviews,
 		&p.Badge, &p.IsNew, &p.IsSale, &p.Shades)

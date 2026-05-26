@@ -2,7 +2,7 @@ package models
 
 import (
 	"database/sql"
-	db "jamsel-backend/database"
+	"jamsel-backend/database"
 
 	"golang.org/x/crypto/bcrypt"
 )
@@ -21,7 +21,7 @@ func (u *User) Create() error {
 	}
 
 	query := `INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id`
-	err = db.DB.QueryRow(query, u.Username, u.Email, string(hashedPassword)).Scan(&u.ID)
+	err = database.DB.QueryRow(query, u.Username, u.Email, string(hashedPassword)).Scan(&u.ID)
 	return err
 }
 
@@ -30,7 +30,7 @@ func GetUserByEmail(email string) (*User, error) {
 	var u User
 	var hashedPassword string
 
-	err := db.DB.QueryRow(query, email).Scan(&u.ID, &u.Username, &u.Email, &hashedPassword)
+	err := database.DB.QueryRow(query, email).Scan(&u.ID, &u.Username, &u.Email, &hashedPassword)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
@@ -45,16 +45,4 @@ func GetUserByEmail(email string) (*User, error) {
 func (u *User) CheckPassword(password string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
 	return err == nil
-}
-
-// UpdatePassword updates an existing user's password
-func (u *User) UpdatePassword() error {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(u.Password), bcrypt.DefaultCost)
-	if err != nil {
-		return err
-	}
-
-	query := `UPDATE users SET password = $1 WHERE id = $2`
-	_, err = db.DB.Exec(query, string(hashedPassword), u.ID)
-	return err
 }

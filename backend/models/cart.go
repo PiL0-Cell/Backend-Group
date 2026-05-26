@@ -1,6 +1,8 @@
 package models
 
-import db "jamsel-backend/database"
+import (
+	"jamsel-backend/database"
+)
 
 type CartItem struct {
 	ProductID int     `json:"product_id"`
@@ -15,8 +17,7 @@ func AddToCart(userID int64, productID int, quantity int) error {
               VALUES ($1, $2, $3)
               ON CONFLICT (user_id, product_id)
               DO UPDATE SET quantity = cart.quantity + $3`
-
-	_, err := db.DB.Exec(query, userID, productID, quantity)
+	_, err := database.DB.Exec(query, userID, productID, quantity)
 	return err
 }
 
@@ -27,7 +28,7 @@ func GetCart(userID int64) ([]CartItem, error) {
               WHERE c.user_id = $1
               ORDER BY c.added_at DESC`
 
-	rows, err := db.DB.Query(query, userID)
+	rows, err := database.DB.Query(query, userID)
 	if err != nil {
 		return nil, err
 	}
@@ -47,12 +48,12 @@ func GetCart(userID int64) ([]CartItem, error) {
 
 func UpdateCartQty(userID int64, productID int, quantity int) error {
 	query := `UPDATE cart SET quantity = $3 WHERE user_id = $1 AND product_id = $2`
-	_, err := db.DB.Exec(query, userID, productID, quantity)
+	_, err := database.DB.Exec(query, userID, productID, quantity)
 	return err
 }
 
 func RemoveFromCart(userID int64, productID int) error {
 	query := `DELETE FROM cart WHERE user_id = $1 AND product_id = $2`
-	_, err := db.DB.Exec(query, userID, productID)
+	_, err := database.DB.Exec(query, userID, productID)
 	return err
 }
