@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	"jamsel-backend/database"
 	"jamsel-backend/handlers"
 	"jamsel-backend/services"
 
@@ -83,6 +84,8 @@ func main() {
 	}
 	log.Println("Database connected successfully")
 
+	database.SetDB(db)
+
 	// Initialize session store
 	Store = sessions.NewCookieStore([]byte("jamsel-secret-key-change-this"))
 
@@ -126,6 +129,19 @@ func main() {
 		}
 		json.NewEncoder(w).Encode(map[string]string{"status": "Products synced to Gorse"})
 	})).Methods("POST", "OPTIONS")
+
+	router.HandleFunc("/api/debug-db", enableCORS(func(w http.ResponseWriter, r *http.Request) {
+		db := database.GetDB()
+		if db == nil {
+			w.Write([]byte("❌ database.DB is NIL - not set properly"))
+			return
+		}
+		if err := db.Ping(); err != nil {
+			w.Write([]byte(fmt.Sprintf("❌ DB Ping failed: %v", err)))
+			return
+		}
+		w.Write([]byte("✅ Database is connected and working!"))
+	})).Methods("GET")
 
 	// Serve frontend
 	staticFile := http.FileServer(http.Dir("../frontend"))
