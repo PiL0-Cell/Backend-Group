@@ -33,21 +33,28 @@ func GetLoggedInUserID(r *http.Request) int64 {
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
+	log.Println("Register endpoint hit") // Add this
+
 	var req RegisterRequest
 	err := json.NewDecoder(r.Body).Decode(&req)
 	if err != nil {
+		log.Println("JSON decode error:", err) // Add this
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]string{"error": "Invalid request body"})
 		return
 	}
 
+	log.Printf("Registering user: %s, %s", req.Username, req.Email) // Add this
+
 	if req.Username == "" || req.Email == "" || req.Password == "" {
+		log.Println("Missing fields") // Add this
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]string{"error": "All fields are required"})
 		return
 	}
 
 	if len(req.Password) < 6 {
+		log.Println("Password too short") // Add this
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]string{"error": "Password must be at least 6 characters"})
 		return
@@ -59,12 +66,16 @@ func Register(w http.ResponseWriter, r *http.Request) {
 		Password: req.Password,
 	}
 
+	log.Println("Calling user.Create()") // Add this
 	err = user.Create()
 	if err != nil {
+		log.Println("User.Create error:", err) // Add this
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{"error": "Failed to create user. Email may already exist."})
 		return
 	}
+
+	log.Println("User created successfully, ID:", user.ID) // Add this
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]interface{}{
