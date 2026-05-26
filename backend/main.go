@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -18,13 +19,22 @@ import (
 var Store *sessions.CookieStore
 
 func initDB() (*sql.DB, error) {
+	// For Render production
 	host := os.Getenv("DB_HOST")
 	port := os.Getenv("DB_PORT")
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
 	dbname := os.Getenv("DB_NAME")
 
-	// Fallbacks for local development
+	// If on Render, use SSL require
+	if os.Getenv("RENDER") == "true" {
+		connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=prefer",
+			host, port, user, password, dbname)
+		log.Println("Connecting to Render PostgreSQL...")
+		return sql.Open("postgres", connStr)
+	}
+
+	// Local development fallback
 	if host == "" {
 		host = "localhost"
 	}
@@ -41,14 +51,9 @@ func initDB() (*sql.DB, error) {
 		dbname = "jamsel_cosmetics"
 	}
 
-	connStr := "host=" + host + " port=" + port + " user=" + user + " password=" + password + " dbname=" + dbname + " sslmode=disable"
+	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		host, port, user, password, dbname)
 
-	// For Render (production), use sslmode=require
-	if os.Getenv("RENDER") == "true" {
-		connStr = "host=" + host + " port=" + port + " user=" + user + " password=" + password + " dbname=" + dbname + " sslmode=require"
-	}
-
-	log.Println("Connecting to database...")
 	return sql.Open("postgres", connStr)
 }
 
