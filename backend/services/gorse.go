@@ -38,11 +38,13 @@ type Item struct {
 func NewGorseClient() *GorseClient {
 	gorseURL := os.Getenv("GORSE_URL")
 	if gorseURL == "" {
+		// Local development fallback
 		gorseURL = "http://localhost:8088"
 	}
+	log.Printf("Gorse client initialized with URL: %s", gorseURL)
 	return &GorseClient{
 		BaseURL: gorseURL,
-		Client:  &http.Client{Timeout: 30 * time.Second},
+		Client:  &http.Client{Timeout: 60 * time.Second}, // Increased timeout for Render cold starts
 	}
 }
 
@@ -52,8 +54,12 @@ func (g *GorseClient) InsertItem(item Item) error {
 		return err
 	}
 
-	resp, err := g.Client.Post(g.BaseURL+"/api/item", "application/json", bytes.NewBuffer(jsonData))
+	url := g.BaseURL + "/api/item"
+	log.Printf("Inserting item to Gorse: %s", url)
+
+	resp, err := g.Client.Post(url, "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
+		log.Printf("Gorse InsertItem error: %v", err)
 		return err
 	}
 	defer resp.Body.Close()
@@ -70,8 +76,12 @@ func (g *GorseClient) InsertFeedback(feedback []Feedback) error {
 		return err
 	}
 
-	resp, err := g.Client.Post(g.BaseURL+"/api/feedback", "application/json", bytes.NewBuffer(jsonData))
+	url := g.BaseURL + "/api/feedback"
+	log.Printf("Sending %d feedback items to Gorse", len(feedback))
+
+	resp, err := g.Client.Post(url, "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
+		log.Printf("Gorse InsertFeedback error: %v", err)
 		return err
 	}
 	defer resp.Body.Close()
@@ -87,11 +97,16 @@ func (g *GorseClient) GetRecommendations(userID string, n int) ([]string, error)
 
 	resp, err := g.Client.Get(url)
 	if err != nil {
+		log.Printf("Gorse GetRecommendations error: %v", err)
 		return nil, err
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
+		// Return empty slice instead of error for no recommendations
+		if resp.StatusCode == http.StatusNotFound {
+			return []string{}, nil
+		}
 		return nil, fmt.Errorf("Gorse error: %s", resp.Status)
 	}
 
@@ -102,8 +117,25 @@ func (g *GorseClient) GetRecommendations(userID string, n int) ([]string, error)
 	return items, nil
 }
 
+func (g *GorseClient) HealthCheck() bool {
+	url := g.BaseURL + "/health"
+	resp, err := g.Client.Get(url)
+	if err != nil {
+		log.Printf("Gorse health check failed: %v", err)
+		return false
+	}
+	defer resp.Body.Close()
+	return resp.StatusCode == http.StatusOK
+}
+
 func SyncAllProducts() error {
 	gorse := NewGorseClient()
+
+	// Check if Gorse is reachable
+	if !gorse.HealthCheck() {
+		log.Println("Gorse not reachable, skipping sync")
+		return fmt.Errorf("Gorse not reachable at %s", gorse.BaseURL)
+	}
 
 	products, err := models.GetAllProducts()
 	if err != nil {
@@ -112,6 +144,7 @@ func SyncAllProducts() error {
 
 	log.Printf("Syncing %d products to Gorse...", len(products))
 
+	successCount := 0
 	for _, p := range products {
 		item := Item{
 			ItemId:     fmt.Sprintf("%d", p.ID),
@@ -124,9 +157,10 @@ func SyncAllProducts() error {
 			log.Printf("Failed to sync product %d: %v", p.ID, err)
 			continue
 		}
+		successCount++
 	}
 
-	log.Println("Products synced to Gorse successfully")
+	log.Printf("Successfully synced %d/%d products to Gorse", successCount, len(products))
 	return nil
 }
 

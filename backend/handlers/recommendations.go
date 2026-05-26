@@ -37,7 +37,7 @@ func GetAIRecommendations(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Received %d recommendations from Gorse", len(recommendedIDs))
 
 	if len(recommendedIDs) == 0 {
-		log.Println("No recommendations from Gorse")
+		log.Println("No recommendations from Gorse, returning empty")
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode([]models.Product{})
 		return
@@ -75,8 +75,15 @@ func SyncUserToGorse(w http.ResponseWriter, r *http.Request) {
 
 	log.Printf("Syncing user %d to Gorse", userID)
 
-	go services.SyncUserWishlistToGorse(userID)
-	go services.SyncUserOrdersToGorse(userID)
+	// Sync in background to not block response
+	go func() {
+		if err := services.SyncUserWishlistToGorse(userID); err != nil {
+			log.Printf("Failed to sync wishlist for user %d: %v", userID, err)
+		}
+		if err := services.SyncUserOrdersToGorse(userID); err != nil {
+			log.Printf("Failed to sync orders for user %d: %v", userID, err)
+		}
+	}()
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"status": "syncing"})
