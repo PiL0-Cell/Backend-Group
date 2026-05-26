@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jamsel Cosmetics — Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="icon" href="./images/Logo1.png">
+</head>
+<body>
+    <!-- Admin Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="sidebar-logo">💧</span>
+            <div>
+                <h2>JAMSEL</h2>
+                <p>Admin Panel</p>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="sidebar-link active" data-tab="dashboard">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                Dashboard
+            </a>
+            <a href="#" class="sidebar-link" data-tab="orders">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                Orders
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="../index.html" class="sidebar-link">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                Back to Store
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <!-- Top Bar -->
+        <header class="admin-topbar">
+            <button class="menu-toggle" id="menu-toggle">
+                <span></span><span></span><span></span>
+            </button>
+            <h1 id="page-title">Dashboard</h1>
+            <div class="topbar-right">
+                <span class="admin-user">👤 Admin</span>
+            </div>
+        </header>
+
+        <!-- Dashboard Tab -->
+        <div class="tab-content active" id="tab-dashboard">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #D4899F, #B5687E);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <p class="stat-label">Total Orders</p>
+                        <h3 class="stat-value" id="stat-total-orders">0</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #C9A96E, #B8903E);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <p class="stat-label">Total Revenue</p>
+                        <h3 class="stat-value" id="stat-revenue">Nu.0.00</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #6BCB77, #4CAF50);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <p class="stat-label">Delivered</p>
+                        <h3 class="stat-value" id="stat-delivered">0</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #E8A0BF, #D4899F);">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <p class="stat-label">Customers</p>
+                        <h3 class="stat-value" id="stat-customers">0</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="recent-orders">
+                <h3>Recent Orders</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Products</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashboard-orders-body">
+                            <!-- Filled by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="empty-admin" id="dashboard-empty" style="display:none;">
+                    <p>📦</p>
+                    <h3>No orders yet</h3>
+                    <p>Orders placed on the store will appear here.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Tab -->
+        <div class="tab-content" id="tab-orders">
+            <div class="orders-header">
+                <h2>All Orders</h2>
+                <div class="orders-filters">
+                    <button class="order-filter-btn active" data-status="all">All</button>
+                    <button class="order-filter-btn" data-status="pending">Pending</button>
+                    <button class="order-filter-btn" data-status="shipped">Shipped</button>
+                    <button class="order-filter-btn" data-status="delivered">Delivered</button>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Products</th>
+                            <th>Amount</th>
+                            <th>Payment</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="all-orders-body">
+                        <!-- Filled by JS -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="empty-admin" id="orders-empty" style="display:none;">
+                <p>📦</p>
+                <h3>No orders found</h3>
+                <p>Orders placed on the store will appear here.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Order Detail Modal -->
+    <div class="admin-modal-overlay" id="order-modal">
+        <div class="admin-modal">
+            <div class="admin-modal-header">
+                <h3>Order Details</h3>
+                <button class="admin-modal-close" onclick="closeOrderModal()">&times;</button>
+            </div>
+            <div class="admin-modal-body" id="order-modal-body">
+                <!-- Filled by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="admin-toast-container" id="admin-toast-container"></div>
+
+    <script src="../js/admin.js"></script>
+</body>
+</html>

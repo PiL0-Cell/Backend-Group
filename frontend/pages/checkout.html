@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Checkout — Jamsel Cosmetics">
+    <title>Checkout — Jamsel Cosmetics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="../images/Logo1.png">
+</head>
+<body>
+    <!-- Header -->
+    <header id="main-header">
+        <nav class="navbar">
+            <a href="../index.html" class="nav-logo"><span class="logo-icon">💧</span><span class="logo-text">JAMSEL</span><span class="logo-sub">COSMETICS</span></a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="../index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="products.html" class="nav-link">Products</a></li>
+                <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                <li><a href="faq.html" class="nav-link">FAQ</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="nav-icon-btn" id="search-toggle-btn" aria-label="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+                <a href="wishlist.html" class="nav-icon-btn" aria-label="Wishlist"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="badge" id="wishlist-count">0</span></a>
+                <a href="cart.html" class="nav-icon-btn" aria-label="Cart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="badge" id="cart-count">0</span></a>
+                <button class="nav-icon-btn" id="login-btn" aria-label="Login"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+                <button class="nav-icon-btn" id="logout-btn" style="display: none;" aria-label="Logout">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                </button>
+                <button class="hamburger" id="hamburger-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+            </div>
+        </nav>
+        <div class="search-bar" id="search-bar"><div class="search-bar-inner"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="search-input" placeholder="Search for products..."><button id="search-close-btn">&times;</button></div><div class="search-results" id="search-results"></div></div>
+    </header>
+
+    <main>
+        <div class="page-hero">
+            <h1>Checkout</h1>
+            <p>Complete your order details below.</p>
+        </div>
+
+        <!-- Checkout Form -->
+        <div class="container" id="checkout-container">
+            <form class="checkout-form" id="checkout-form">
+                <div class="checkout-grid" style="display: grid; grid-template-columns: 1fr 380px; gap: 2rem;">
+                    <div class="checkout-details">
+                        <h3>Customer Information</h3>
+                        <div class="form-group"><label for="checkout-name">Full Name *</label><input type="text" id="checkout-name" required placeholder="Enter your full name"></div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group"><label for="checkout-email">Email *</label><input type="email" id="checkout-email" required placeholder="your@email.com"></div>
+                            <div class="form-group"><label for="checkout-phone">Phone Number *</label><input type="tel" id="checkout-phone" required placeholder="+975 1234 5678"></div>
+                        </div>
+                        <h3 style="margin-top: 1.5rem;">Delivery Address</h3>
+                        <div class="form-group"><label for="checkout-address">Street Address *</label><input type="text" id="checkout-address" required placeholder="House No, Street"></div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div class="form-group"><label for="checkout-city">City *</label><input type="text" id="checkout-city" required placeholder="City"></div>
+                            <div class="form-group"><label for="checkout-zip">ZIP Code</label><input type="text" id="checkout-zip" placeholder="ZIP / Postal Code"></div>
+                        </div>
+                        <h3 style="margin-top: 1.5rem;">Payment Method</h3>
+                        <div class="payment-options" id="payment-options" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                            <label class="payment-option" style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                                <input type="radio" name="payment" value="cod" checked> Cash on Delivery
+                            </label>
+                            <label class="payment-option" style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                                <input type="radio" name="payment" value="card"> Credit / Debit Card
+                            </label>
+                            <label class="payment-option" style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                                <input type="radio" name="payment" value="wallet"> Mobile Wallet
+                            </label>
+                        </div>
+                    </div>
+                    <div class="checkout-summary" style="background: #f9f9f9; padding: 1.5rem; border-radius: 20px; position: sticky; top: 100px;">
+                        <h3 style="margin-bottom: 1rem;">Order Summary</h3>
+                        <div id="checkout-items-list" style="margin-bottom: 1rem;"></div>
+                        <div style="height: 1px; background: #e0e0e0; margin: 1rem 0;"></div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;"><span>Subtotal</span><span id="checkout-subtotal">Nu.0.00</span></div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.75rem;"><span>Shipping</span><span id="checkout-shipping">Nu.5.00</span></div>
+                        <div style="height: 1px; background: #e0e0e0; margin: 1rem 0;"></div>
+                        <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 1.2rem;"><span>Total</span><span id="checkout-total" style="color: #D4899F;">Nu.5.00</span></div>
+                        <button type="submit" class="btn-primary btn-full" style="margin-top: 1.5rem; width: 100%;">Place Order</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Order Success (hidden by default) -->
+        <div class="container" id="success-container" style="display:none; text-align: center; padding: 4rem;">
+            <div class="success-content">
+                <div class="success-icon" style="font-size: 4rem;">✨</div>
+                <h1 style="margin: 1rem 0;">Order Placed Successfully!</h1>
+                <p>Thank you for shopping with Jamsel Cosmetics.</p>
+                <p>Your order ID: <strong id="success-order-id"></strong></p>
+                <p>We'll send a confirmation to your email shortly.</p>
+                <a href="../index.html" class="btn-primary" style="margin-top:1.5rem;display:inline-block;">Continue Shopping</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="main-footer"><div class="footer-content"><div class="footer-grid"><div class="footer-brand"><div class="footer-logo"><span class="logo-icon">💧</span><span class="logo-text">JAMSEL</span></div><p>Enhancing natural beauty with hydration, confidence, and color.</p></div><div class="footer-links"><h4>Quick Links</h4><ul><li><a href="../index.html">Home</a></li><li><a href="products.html">Products</a></li><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-links"><h4>Support</h4><ul><li><a href="faq.html">Shipping</a></li><li><a href="faq.html">Returns</a></li><li><a href="admin.html" target="_blank">Admin</a></li></ul></div><div class="footer-newsletter"><h4>Newsletter</h4><p>Get beauty tips and offers.</p><form class="footer-newsletter-form" id="footer-newsletter-form"><input type="email" placeholder="Your email" required><button type="submit" class="btn-primary btn-sm">Join</button></form></div></div><div class="footer-bottom"><p>&copy; 2026 Jamsel Cosmetics. All rights reserved.</p></div></div></footer>
+    <button id="back-to-top" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
+    <div class="toast-container" id="toast-container"></div>
+    <div class="modal-overlay" id="quick-view-modal"><div class="modal-content"><button class="modal-close" id="modal-close">&times;</button><div id="quick-view-content"></div></div></div>
+    <div class="modal-overlay" id="login-modal"><div class="modal-content login-modal-content"><button class="modal-close" id="login-modal-close">&times;</button><div class="login-content"><h2>Welcome Back</h2><p>Sign in to your Jamsel account</p><form class="login-form" id="login-form"><div class="form-group"><label for="login-email">Email</label><input type="email" id="login-email" placeholder="your@email.com"></div><div class="form-group"><label for="login-password">Password</label><input type="password" id="login-password" placeholder="••••••••"></div><button type="submit" class="btn-primary btn-full">Sign In</button></form><p class="login-note">Don't have an account? <a href="#" id="show-register-link" style="color:#D4899F;">Register here</a></p></div></div></div>
+
+    <script src="../js/script.js"></script>
+    <script>
+        let currentCart = [];
+        
+        // Load cart from backend
+        async function loadCheckoutCart() {
+            await loadCartFromBackend();
+            currentCart = [...cart];
+            
+            const listContainer = document.getElementById('checkout-items-list');
+            
+            if (currentCart.length === 0) {
+                listContainer.innerHTML = '<p style="color:#999;text-align:center;padding:1rem;">Your cart is empty. <a href="products.html" style="color:#D4899F;">Shop now</a></p>';
+                document.querySelector('button[type="submit"]').disabled = true;
+                return;
+            }
+            
+            document.querySelector('button[type="submit"]').disabled = false;
+            
+            let itemsHtml = '<div style="display: flex; flex-direction: column; gap: 0.75rem;">';
+            for (const item of currentCart) {
+                const product = products.find(p => p.id === item.id);
+                if (!product) continue;
+                
+                itemsHtml += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid #eee;">
+                        <div>
+                            <span style="font-weight: 500;">${product.name}</span>
+                            <span style="color: #888; font-size: 0.8rem;"> × ${item.qty}</span>
+                        </div>
+                        <span style="color: #D4899F; font-weight: 600;">Nu.${(product.price * item.qty).toFixed(2)}</span>
+                    </div>
+                `;
+            }
+            itemsHtml += '</div>';
+            listContainer.innerHTML = itemsHtml;
+            
+            updateOrderSummary();
+        }
+        
+        function updateOrderSummary() {
+            const subtotal = getCartTotal();
+            const shipping = subtotal > 50 ? 0 : 5.00;
+            document.getElementById('checkout-subtotal').textContent = `Nu.${subtotal.toFixed(2)}`;
+            document.getElementById('checkout-shipping').textContent = shipping === 0 ? 'Free' : `Nu.${shipping.toFixed(2)}`;
+            document.getElementById('checkout-total').textContent = `Nu.${(subtotal + shipping).toFixed(2)}`;
+        }
+        
+        // Auto-fill saved credit card from database
+        async function autoFillCreditCard() {
+            try {
+                const result = await apiCall('/api/cards/default', 'GET');
+                
+                if (result.ok && result.data) {
+                    const card = result.data;
+                    
+                    // Add saved card option to payment methods
+                    const paymentOptions = document.getElementById('payment-options');
+                    
+                    // Check if saved card option already exists
+                    if (!document.getElementById('saved-card-option')) {
+                        const savedCardHtml = `
+                            <label id="saved-card-option" class="payment-option" style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; background: #f0e6e9; padding: 0.75rem; border-radius: 12px; margin-bottom: 0.5rem;">
+                                <input type="radio" name="payment" value="saved_card" checked>
+                                <span class="payment-label">
+                                    <span class="payment-icon">💳</span>
+                                    <strong>Saved Card</strong> •••• ${card.card_last4} (${card.card_brand || 'Card'})
+                                    <span style="font-size: 0.7rem; color: #888; margin-left: 0.5rem;">Expires ${card.expiry_month}/${card.expiry_year}</span>
+                                </span>
+                            </label>
+                        `;
+                        paymentOptions.insertAdjacentHTML('afterbegin', savedCardHtml);
+                    }
+                    
+                    // Also pre-fill customer name if available
+                    const userName = localStorage.getItem('jamsel_username');
+                    if (userName && document.getElementById('checkout-name').value === '') {
+                        document.getElementById('checkout-name').value = userName;
+                    }
+                    
+                    console.log('Saved card loaded for checkout:', card.card_last4);
+                } else {
+                    console.log('No saved card found');
+                }
+            } catch (error) {
+                console.error('Error loading saved card:', error);
+            }
+        }
+        
+        // Pre-fill form with user data
+        async function prefillUserData() {
+            const userResult = await apiCall('/api/user', 'GET');
+            if (userResult.ok && userResult.data) {
+                const emailInput = document.getElementById('checkout-email');
+                if (emailInput && userResult.data.email) {
+                    emailInput.value = userResult.data.email;
+                }
+            }
+        }
+        
+        // Place order handler
+        async function handlePlaceOrder(e) {
+            e.preventDefault();
+            
+            if (currentCart.length === 0) {
+                showToast('Your cart is empty!', 'error');
+                return;
+            }
+            
+            // Check if user is logged in
+            const userResult = await apiCall('/api/user', 'GET');
+            if (!userResult.ok) {
+                showToast('Please login to place order', 'error');
+                document.getElementById('login-modal').classList.add('open');
+                return;
+            }
+            
+            const subtotal = getCartTotal();
+            const shipping = subtotal > 50 ? 0 : 5.00;
+            
+            const orderItems = [];
+            for (const item of currentCart) {
+                const product = products.find(p => p.id === item.id);
+                if (product) {
+                    orderItems.push({
+                        product_id: item.id,
+                        name: product.name,
+                        price: product.price,
+                        quantity: item.qty,
+                        image: product.image
+                    });
+                }
+            }
+            
+            const orderData = {
+                customer: {
+                    name: document.getElementById('checkout-name').value,
+                    email: document.getElementById('checkout-email').value,
+                    phone: document.getElementById('checkout-phone').value,
+                    address: document.getElementById('checkout-address').value,
+                    city: document.getElementById('checkout-city').value,
+                    zip: document.getElementById('checkout-zip').value
+                },
+                items: orderItems,
+                subtotal: subtotal,
+                shipping: shipping,
+                total: subtotal + shipping,
+                payment: document.querySelector('input[name="payment"]:checked').value
+            };
+            
+            const orderResult = await apiCall('/api/orders', 'POST', orderData);
+            
+            if (orderResult.ok) {
+                currentCart = [];
+                cart = [];
+                await loadCartFromBackend();
+                updateCartBadge();
+                
+                document.getElementById('success-order-id').textContent = orderResult.data.order_number;
+                document.getElementById('checkout-container').style.display = 'none';
+                document.getElementById('success-container').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                showToast(orderResult.data.error || 'Failed to place order', 'error');
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadCheckoutCart();
+            await prefillUserData();
+            await autoFillCreditCard();
+            updateCartBadge();
+            updateWishlistBadge();
+            
+            document.getElementById('checkout-form').addEventListener('submit', handlePlaceOrder);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Product details — Jamsel Cosmetics premium beauty.">
+    <title>Product Details — Jamsel Cosmetics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="./images/Logo1.png">
+</head>
+<body>
+    <!-- Header -->
+    <header id="main-header">
+        <nav class="navbar">
+            <a href="../index.html" class="nav-logo"><span class="logo-icon">💧</span><span class="logo-text">JAMSEL</span><span class="logo-sub">COSMETICS</span></a>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="../index.html" class="nav-link">Home</a></li>
+                <li><a href="about.html" class="nav-link">About</a></li>
+                <li><a href="products.html" class="nav-link active">Products</a></li>
+                <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+                <li><a href="faq.html" class="nav-link">FAQ</a></li>
+                <li><a href="contact.html" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="nav-icon-btn" id="search-toggle-btn" aria-label="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></button>
+                <a href="wishlist.html" class="nav-icon-btn" aria-label="Wishlist"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="badge" id="wishlist-count">0</span></a>
+                <a href="cart.html" class="nav-icon-btn" aria-label="Cart"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span class="badge" id="cart-count">0</span></a>
+                <button class="nav-icon-btn" id="login-btn" aria-label="Login"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></button>
+                <button class="nav-icon-btn" id="logout-btn" style="display: none;" aria-label="Logout">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                </button>
+                <button class="hamburger" id="hamburger-btn" aria-label="Menu"><span></span><span></span><span></span></button>
+            </div>
+        </nav>
+        <div class="search-bar" id="search-bar"><div class="search-bar-inner"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><input type="text" id="search-input" placeholder="Search for products..."><button id="search-close-btn">&times;</button></div><div class="search-results" id="search-results"></div></div>
+    </header>
+
+    <main>
+        <div class="container">
+            <a href="products.html" class="back-btn">&larr; Back to Products</a>
+            <div class="product-detail" id="product-detail-content">
+                <!-- Filled by JS -->
+            </div>
+            <div class="product-reviews-section">
+                <h3>Customer Reviews</h3>
+                <div class="reviews-list" id="product-reviews"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="main-footer"><div class="footer-content"><div class="footer-grid"><div class="footer-brand"><div class="footer-logo"><span class="logo-icon">💧</span><span class="logo-text">JAMSEL</span></div><p>Enhancing natural beauty with hydration, confidence, and color.</p></div><div class="footer-links"><h4>Quick Links</h4><ul><li><a href="../index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="products.html">Products</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="footer-links"><h4>Support</h4><ul><li><a href="faq.html">FAQ</a></li><li><a href="contact.html">Help</a></li><li><a href="admin.html" target="_blank">Admin</a></li></ul></div><div class="footer-newsletter"><h4>Newsletter</h4><p>Get beauty tips and offers.</p><form class="footer-newsletter-form" id="footer-newsletter-form"><input type="email" placeholder="Your email" required><button type="submit" class="btn-primary btn-sm">Join</button></form></div></div><div class="footer-bottom"><p>&copy; 2026 Jamsel Cosmetics. All rights reserved.</p></div></div></footer>
+    <button id="back-to-top" aria-label="Back to top"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg></button>
+    <div class="modal-overlay" id="quick-view-modal"><div class="modal-content"><button class="modal-close" id="modal-close">&times;</button><div id="quick-view-content"></div></div></div>
+    <div class="modal-overlay" id="login-modal"><div class="modal-content login-modal-content"><button class="modal-close" id="login-modal-close">&times;</button><div class="login-content"><h2>Welcome Back</h2><p>Sign in to your Jamsel account</p><form class="login-form" id="login-form"><div class="form-group"><label for="login-email">Email</label><input type="email" id="login-email" placeholder="your@email.com"></div><div class="form-group"><label for="login-password">Password</label><input type="password" id="login-password" placeholder="••••••••"></div><button type="submit" class="btn-primary btn-full">Sign In</button></form><p class="login-note">UI demo only.</p></div></div></div>
+    <div class="toast-container" id="toast-container"></div>
+    <script src="../js/script.js"></script>
+    <script>
+        let detailQty = 1;
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = parseInt(params.get('id'));
+            const product = products.find(p => p.id === id);
+            if (!product) {
+                document.getElementById('product-detail-content').innerHTML = '<p style="text-align:center;padding:4rem 0;">Product not found. <a href="products.html">Browse all products</a></p>';
+                return;
+            }
+            document.title = `${product.name} — Jamsel Cosmetics`;
+            const stars = '★'.repeat(Math.floor(product.rating)) + (product.rating % 1 >= 0.5 ? '½' : '');
+            const shadesHTML = product.shades.length > 0 ? `
+                <h4 class="pd-section-title">Available Shades</h4>
+                <div class="pd-shades">${product.shades.map((s, i) => `<div class="shade-swatch ${i === 0 ? 'selected' : ''}" style="background:${s}" onclick="this.parentElement.querySelectorAll('.shade-swatch').forEach(x=>x.classList.remove('selected'));this.classList.add('selected')"></div>`).join('')}</div>
+            ` : '';
+            document.getElementById('product-detail-content').innerHTML = `
+                <div class="pd-image"><img src="${imgPath}${product.image.replace('images/','')}" alt="${product.name}"></div>
+                <div class="pd-info">
+                    <p class="pd-category">${product.category.replace('-', ' ')}</p>
+                    <h1>${product.name}</h1>
+                    <p class="pd-rating">${stars} <span>${product.reviews} reviews</span></p>
+                    <div class="pd-price">
+                        <span class="current">Nu.${product.price.toFixed(2)}</span>
+                        ${product.originalPrice ? `<span class="original">Nu.${product.originalPrice.toFixed(2)}</span>` : ''}
+                    </div>
+                    <p class="pd-desc">${product.description}</p>
+                    ${shadesHTML}
+                    <h4 class="pd-section-title">Ingredients</h4>
+                    <p class="pd-ingredients">${product.ingredients}</p>
+                    <h4 class="pd-section-title">Quantity</h4>
+                    <div class="pd-quantity">
+                        <div class="qty-control">
+                            <button class="qty-btn" onclick="detailQty=Math.max(1,detailQty-1);document.getElementById('dqty').value=detailQty">−</button>
+                            <input type="text" class="qty-value" id="dqty" value="1" readonly>
+                            <button class="qty-btn" onclick="detailQty=Math.min(10,detailQty+1);document.getElementById('dqty').value=detailQty">+</button>
+                        </div>
+                    </div>
+                    <div class="pd-actions">
+                        <button class="btn-primary" onclick="for(let i=0;i<detailQty;i++){addToCartSilent(${product.id});}updateCartBadge();showToast('Added '+detailQty+' item(s) to cart!','success');">Add to Cart</button>
+                        <button class="btn-outline" onclick="for(let i=0;i<detailQty;i++){addToCartSilent(${product.id});}updateCartBadge();window.location.href='checkout.html';">Buy Now</button>
+                    </div>
+                </div>
+            `;
+            // Reviews
+            document.getElementById('product-reviews').innerHTML = sampleReviews.map(r => `
+                <div class="review-card">
+                    <div class="review-header"><span class="review-author">${r.author}</span><span class="review-stars">${'★'.repeat(r.stars)}${'☆'.repeat(5 - r.stars)}</span></div>
+                    <p class="review-text">${r.text}</p>
+                    <p class="review-date">${r.date}</p>
+                </div>
+            `).join('');
+        });
+    </script>
+</body>
+</html>
