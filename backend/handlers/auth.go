@@ -2,11 +2,81 @@ package handlers
 
 import (
 	"encoding/json"
+	"jamsel-backend/database"
 	"jamsel-backend/models"
 	"jamsel-backend/services"
 	"log"
 	"net/http"
 )
+
+func Register(w http.ResponseWriter, r *http.Request) {
+	// Add panic recovery
+	defer func() {
+		if rec := recover(); rec != nil {
+			log.Printf("PANIC in Register: %v", rec)
+			w.WriteHeader(http.StatusInternalServerError)
+			json.NewEncoder(w).Encode(map[string]string{"error": "Internal server error"})
+		}
+	}()
+
+	log.Println("Register endpoint called")
+
+	var req RegisterRequest
+	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		log.Println("JSON decode error:", err)
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"error": "Invalid request body"})
+		return
+	}
+
+	log.Printf("Register request: username=%s, email=%s", req.Username, req.Email)
+
+	if req.Username == "" || req.Email == "" || req.Password == "" {
+		log.Println("Missing fields")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"error": "All fields are required"})
+		return
+	}
+
+	if len(req.Password) < 6 {
+		log.Println("Password too short")
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]string{"error": "Password must be at least 6 characters"})
+		return
+	}
+
+	// Check if database is connected
+	if database.DB == nil {
+		log.Println("Database connection is nil!")
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"error": "Database not connected"})
+		return
+	}
+
+	user := &models.User{
+		Username: req.Username,
+		Email:    req.Email,
+		Password: req.Password,
+	}
+
+	err = user.Create()
+	if err != nil {
+		log.Println("User.Create error:", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"error": "Failed to create user. Email may already exist."})
+		return
+	}
+
+	log.Printf("User created successfully: ID=%d", user.ID)
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success": true,
+		"user_id": user.ID,
+		"message": "Account created successfully",
+	})
+}
 
 type RegisterRequest struct {
 	Username string `json:"username"`
@@ -30,59 +100,6 @@ func GetLoggedInUserID(r *http.Request) int64 {
 		return 0
 	}
 	return userID
-}
-
-func Register(w http.ResponseWriter, r *http.Request) {
-	log.Println("Register endpoint hit") // Add this
-
-	var req RegisterRequest
-	err := json.NewDecoder(r.Body).Decode(&req)
-	if err != nil {
-		log.Println("JSON decode error:", err) // Add this
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]string{"error": "Invalid request body"})
-		return
-	}
-
-	log.Printf("Registering user: %s, %s", req.Username, req.Email) // Add this
-
-	if req.Username == "" || req.Email == "" || req.Password == "" {
-		log.Println("Missing fields") // Add this
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]string{"error": "All fields are required"})
-		return
-	}
-
-	if len(req.Password) < 6 {
-		log.Println("Password too short") // Add this
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]string{"error": "Password must be at least 6 characters"})
-		return
-	}
-
-	user := &models.User{
-		Username: req.Username,
-		Email:    req.Email,
-		Password: req.Password,
-	}
-
-	log.Println("Calling user.Create()") // Add this
-	err = user.Create()
-	if err != nil {
-		log.Println("User.Create error:", err) // Add this
-		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(map[string]string{"error": "Failed to create user. Email may already exist."})
-		return
-	}
-
-	log.Println("User created successfully, ID:", user.ID) // Add this
-
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(map[string]interface{}{
-		"success": true,
-		"user_id": user.ID,
-		"message": "Account created successfully",
-	})
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
